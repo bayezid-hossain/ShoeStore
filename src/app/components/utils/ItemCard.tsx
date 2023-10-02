@@ -1,6 +1,9 @@
+'use client';
+import { setAddItemToCart } from '@/redux/CartSlice';
 import { ShoppingBagIcon, StarIcon } from '@heroicons/react/24/solid';
 import Image, { StaticImageData } from 'next/image';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 interface SaleItem {
   id: string;
   title: string;
@@ -17,6 +20,15 @@ interface SingleItem {
   ifExists: boolean;
 }
 const ItemCard: React.FC<SingleItem> = ({ item, ifExists }) => {
+  // type ExcludeProps='color'|'shadow'|'btn'|'rating';
+  const dispatch = useDispatch();
+  const onAddToCart = () => {
+    // const itemToPush={
+    //   ...item,
+    //   cartQuantity:0,
+    // } as Omit<typeof item, ExcludeProps> & {cartQuantity:number};
+    dispatch(setAddItemToCart({ ...item, cartQuantity: 0 }));
+  };
   return (
     <div
       className={`relative bg-gradient-to-b ${item.color} ${
@@ -51,6 +63,7 @@ const ItemCard: React.FC<SingleItem> = ({ item, ifExists }) => {
           <button
             type="button"
             className="bg-white/90 blur-effect-theme button-theme p-0.5 shadow shadow-sky-200  "
+            onClick={onAddToCart}
           >
             <ShoppingBagIcon className="icon-style text-slate-900" />
           </button>
