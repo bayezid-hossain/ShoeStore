@@ -13,6 +13,7 @@ const config: Config = {
       lg: { max: '991px' },
       md: { max: '767px' },
       sm: { max: '550px' },
+      odd: { max: '403px', min: '376px' },
       xsm: { max: '375px' },
     },
   },

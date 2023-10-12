@@ -1,5 +1,5 @@
 'use client';
-import { setAddItemToCart } from '@/redux/CartSlice';
+import { setAddItemToCart, setOpenCart } from '@/redux/CartSlice';
 import { ShoppingBagIcon, StarIcon } from '@heroicons/react/24/solid';
 import Image, { StaticImageData } from 'next/image';
 import React from 'react';
@@ -23,11 +23,10 @@ const ItemCard: React.FC<SingleItem> = ({ item, ifExists }) => {
   // type ExcludeProps='color'|'shadow'|'btn'|'rating';
   const dispatch = useDispatch();
   const onAddToCart = () => {
-    // const itemToPush={
-    //   ...item,
-    //   cartQuantity:0,
-    // } as Omit<typeof item, ExcludeProps> & {cartQuantity:number};
     dispatch(setAddItemToCart({ ...item, cartQuantity: 0 }));
+  };
+  const onCartToggle = () => {
+    dispatch(setOpenCart());
   };
   return (
     <div
@@ -70,6 +69,10 @@ const ItemCard: React.FC<SingleItem> = ({ item, ifExists }) => {
           <button
             type="button"
             className="bg-white/90 blur-effect-theme button-theme px-2 py-1 shadow shadow-sky-200 text-sm text-black "
+            onClick={() => {
+              onAddToCart();
+              onCartToggle();
+            }}
           >
             {item.btn}
           </button>

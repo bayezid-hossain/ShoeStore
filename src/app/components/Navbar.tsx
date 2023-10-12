@@ -8,12 +8,12 @@ import {
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import logo from '../assets/logo.png';
-import { useDispatch } from 'react-redux';
-import { setOpenCart } from '@/redux/CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectTotalQuantity, setOpenCart } from '@/redux/CartSlice';
 const Navbar = () => {
   const [navState, setNavState] = useState(false);
   const dispatch = useDispatch();
-
+  const totalQuantity = useSelector(selectTotalQuantity);
   const onCartToggle = () => {
     dispatch(setOpenCart());
   };
@@ -82,7 +82,7 @@ const Navbar = () => {
                         : ' bg-slate-100 text-slate-900 shadow-slate-100'
                     }`}
                   >
-                    0
+                    {totalQuantity}
                   </div>
                 </button>
               </li>

@@ -1,6 +1,12 @@
+import {
+  setDecreaseItemQTY,
+  setIncreaseItemQTY,
+  setRemoveItemFromCart,
+} from '@/redux/CartSlice';
 import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import Image, { StaticImageData } from 'next/image';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 interface CartItem {
   id: string;
   title: string;
@@ -18,19 +24,23 @@ interface Item {
   item: CartItem;
 }
 const CartItem: React.FC<Item> = ({
-  item: {
-    id,
-    title,
-    text,
-    img,
-    price,
-    cartQuantity,
-    btn,
-    color,
-    rating,
-    shadow,
-  },
+  item: { id, title, text, img, price, cartQuantity, color, shadow },
 }) => {
+  const dispatch = useDispatch();
+  const onRemoveItem = () => {
+    dispatch(
+      setRemoveItemFromCart({
+        id,
+        title,
+      })
+    );
+  };
+  const onQuantityIncrease = () => {
+    dispatch(setIncreaseItemQTY({ id, title, cartQuantity }));
+  };
+  const onQuantityDecrease = () => {
+    dispatch(setDecreaseItemQTY({ id, title, cartQuantity }));
+  };
   return (
     <div className="flex items-center justify-between w-full px-5">
       <div className="flex items-center gap-5">
@@ -44,6 +54,9 @@ const CartItem: React.FC<Item> = ({
             height={100}
             className="w-36 h-auto object-fill lg:w-28"
           />
+          <div className=" absolute right-1 top-1 blur-theme-effect bg-white/80 text-black text-xs px-1 rounded">
+            ${price}
+          </div>
         </div>
         <div className="grid items-center gap-4">
           <div className="grid items-center leading-none">
@@ -56,6 +69,7 @@ const CartItem: React.FC<Item> = ({
             <button
               type="button"
               className=" bg-theme-cart rounded w-6 h-6 lg:h-5 lg:w-5 flex items-center justify-center active:scale-90"
+              onClick={onQuantityDecrease}
             >
               <MinusIcon className="w-5 h-5 lg:w-4 lg:h-4 text-white stroke-[2]" />
             </button>
@@ -65,6 +79,7 @@ const CartItem: React.FC<Item> = ({
             <button
               type="button"
               className=" bg-theme-cart rounded w-6 h-6 lg:h-5 lg:w-5 flex items-center justify-center active:scale-90"
+              onClick={onQuantityIncrease}
             >
               <PlusIcon className="w-5 h-5 lg:w-4 lg:h-4 text-white stroke-[2]" />
             </button>
@@ -81,6 +96,7 @@ const CartItem: React.FC<Item> = ({
           <button
             type="button"
             className="border border-black border-solid rounded p-1 lg:p-0.5 grid items-center justify-items-center"
+            onClick={onRemoveItem}
           >
             <TrashIcon className="w-5 h-5 text-red-800" />
           </button>
